@@ -42,11 +42,25 @@
 
 		private QuadTreeNode[] subNodes;
 
+        private bool isPower2(ushort i)
+        {
+            for( int power = 1; power < (1 << 30) ; power <<= 1 )
+            {
+                if (i < power)
+                    return false;
+                if (i == power)
+                    return true;
+            }
+            return false;
+        }
+
 		/// <param name="position">QuadTreeNode start position</param>
 		/// <param name="size">Please ensure that the size is a power-of-two number!</param>
 		public QuadTreeNode(Vector2Int position, ushort size)
 		{
-			this.Position = position;
+            Debug.Assert(size > 0);
+            Debug.Assert(isPower2(size));
+            this.Position = position;
 			this.Size = size;
 		}
 
