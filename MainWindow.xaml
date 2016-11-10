@@ -43,6 +43,10 @@
                     <TextBlock Text="QuadTree nodes: " />
                     <TextBlock Text="{Binding StatsQuadTreeNodesCount, ElementName=Window}" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="QuadTree Fill Ratio: " />
+                    <TextBlock Text="{Binding StatsQuadTreeFillRatio, ElementName=Window}" />
+                </StackPanel>
             </StackPanel>
         </Border>
     </Grid>

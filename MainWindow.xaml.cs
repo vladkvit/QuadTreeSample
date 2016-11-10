@@ -35,7 +35,14 @@
 				typeof(MainWindow),
 				new PropertyMetadata(default(int)));
 
-		public static readonly DependencyProperty CanvasScaleProperty =
+        public static readonly DependencyProperty StatsQuadTreeFillRatioProperty =
+            DependencyProperty.Register(
+                "StatsQuadTreeFillRatio",
+                typeof(double),
+                typeof(MainWindow),
+                new PropertyMetadata(default(double)));
+
+        public static readonly DependencyProperty CanvasScaleProperty =
 			DependencyProperty.Register("CanvasScale", typeof(int), typeof(MainWindow), new PropertyMetadata(DefaultCanvasScale));
 
 		private readonly UIElementCollection canvasChildren;
@@ -83,6 +90,12 @@
 			get { return (int)this.GetValue(StatsQuadTreeNodesCountProperty); }
 			set { this.SetValue(StatsQuadTreeNodesCountProperty, value); }
 		}
+
+        public double StatsQuadTreeFillRatio
+        {
+            get { return (double)this.GetValue(StatsQuadTreeFillRatioProperty); }
+            set { this.SetValue(StatsQuadTreeFillRatioProperty, value); }
+        }
 
 		private void Clear()
 		{
@@ -238,6 +251,7 @@
 
 			var subNodesCount = 1 + this.quadTreeRoot.SubNodesCount;
 			this.StatsQuadTreeNodesCount = subNodesCount;
+            this.StatsQuadTreeFillRatio = this.quadTreeRoot.FilledRatio;
 			var tree = this.quadTreeRoot;
 
 			var pointsCount = 0;

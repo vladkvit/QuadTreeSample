@@ -36,7 +36,7 @@
 		public readonly ushort Size;
 
 		/// <summary>
-		/// Determines if the node itself is filled or not. If node contains any subnodes it mush not be filled.
+		/// Determines if the node itself is filled or not. If node contains any subnodes it must not be filled.
 		/// </summary>
 		private bool isFilled;
 
@@ -75,6 +75,18 @@
 		/// </summary>
 		public QuadTreeNode[] SubNodes => this.subNodes;
 
+        /// <summary>
+        /// Returns a double float containing a number from 0.0 to 1.0 inclusively.
+        /// The number represents the ratio of how many 
+        /// </summary>
+        public double FilledRatio
+        {
+            get
+            {
+                return (double)this.FilledAreaCount / (this.Size * this.Size);
+            }
+        }
+
 		public int SubNodesCount
 		{
 			get
@@ -99,6 +111,30 @@
 				return result;
 			}
 		}
+
+        public int FilledAreaCount
+        {
+            get
+            {
+                if( this.isFilled)
+                {
+                    Debug.Assert(this.subNodes == null);
+                    return Size * Size;
+                }
+
+                int result = 0;
+                for( var index = 0; index < this.subNodes.Length; index++ )
+                {
+                    var subNode = this.subNodes[index];
+                    if (subNode == null)
+                    {
+                        continue;
+                    }
+                    result += subNode.FilledAreaCount;
+                }
+                return result;
+            }
+        }
 
 		/// <summary>
 		/// Adds all stored positions in this quad tree node (and its subnodes) to the list.
@@ -312,7 +348,7 @@
 		/// <param name="checkSubnodesForConsolidation">
 		/// Optimization: this flag determines if we need to check subnodes for consolidation:
 		/// <returns></returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		//[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private QuadTreeNode GetOrCreateSubNode(Vector2Int position, out bool checkSubnodesForConsolidation)
 		{
 			// find subnode
