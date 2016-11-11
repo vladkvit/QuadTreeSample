@@ -236,7 +236,29 @@
 			this.TryConsolidateOnReset();
 		}
 
-		public IList<QuadTreeNodeSnapshot> Save()
+        public bool IsPositionFilled(Vector2Int position)
+        {
+            Debug.Assert(position.X >= this.Position.X);
+            Debug.Assert(position.Y >= this.Position.Y);
+            Debug.Assert(position.X <= this.Position.X + this.Size);
+            Debug.Assert(position.Y <= this.Position.Y + this.Size);
+
+            if (this.subNodes == null)
+            {
+                return this.isFilled;
+            }
+
+            var subNodeIndex = this.CalculateNodeIndex(position);
+            var subNode = this.subNodes[subNodeIndex];
+            if (subNode == null)
+            {
+                return false;
+            }
+            return subNode.IsPositionFilled(position);
+        }
+
+
+        public IList<QuadTreeNodeSnapshot> Save()
 		{
 			var list = new List<QuadTreeNodeSnapshot>();
 			this.Save(list);
